@@ -43,8 +43,8 @@ impl<N: Network> DynProvider<N> {
     }
 }
 
-#[cfg_attr(target_arch = "wasm32", async_trait::async_trait(?Send))]
-#[cfg_attr(not(target_arch = "wasm32"), async_trait::async_trait)]
+#[cfg_attr(target_family = "wasm", async_trait::async_trait(?Send))]
+#[cfg_attr(not(target_family = "wasm"), async_trait::async_trait)]
 impl<N: Network> Provider<N> for DynProvider<N> {
     fn root(&self) -> &RootProvider<N> {
         self.0.root()
@@ -436,7 +436,7 @@ mod tests {
     #[test]
     fn test_erased_provider() {
         let provider =
-            ProviderBuilder::new().on_http("http://localhost:8080".parse().unwrap()).erased();
+            ProviderBuilder::new().connect_http("http://localhost:8080".parse().unwrap()).erased();
         assert_provider(provider);
     }
 }

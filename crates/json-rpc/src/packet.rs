@@ -1,4 +1,4 @@
-use crate::{ErrorPayload, Id, Response, SerializedRequest};
+use crate::{ErrorPayload, Id, Response, ResponsePayload, SerializedRequest};
 use alloy_primitives::map::HashSet;
 use serde::{
     de::{self, Deserializer, MapAccess, SeqAccess, Visitor},
@@ -45,6 +45,22 @@ impl RequestPacket {
     /// Create a new empty packet with the given capacity.
     pub fn with_capacity(capacity: usize) -> Self {
         Self::Batch(Vec::with_capacity(capacity))
+    }
+
+    /// Returns the [`SerializedRequest`] if this packet is [`ResponsePacket::Single`]
+    pub const fn as_single(&self) -> Option<&SerializedRequest> {
+        match self {
+            Self::Single(req) => Some(req),
+            Self::Batch(_) => None,
+        }
+    }
+
+    /// Returns the batch of [`SerializedRequest`] if this packet is [`ResponsePacket::Batch`]
+    pub fn as_batch(&self) -> Option<&[SerializedRequest]> {
+        match self {
+            Self::Batch(req) => Some(req.as_slice()),
+            Self::Single(_) => None,
+        }
     }
 
     /// Serialize the packet as a boxed [`RawValue`].
@@ -95,6 +111,19 @@ impl RequestPacket {
                 self.push(req);
             }
         }
+    }
+
+    /// Returns a all [`SerializedRequest`].
+    pub fn requests(&self) -> &[SerializedRequest] {
+        match self {
+            Self::Single(req) => std::slice::from_ref(req),
+            Self::Batch(req) => req.as_slice(),
+        }
+    }
+
+    /// Returns an iterator over the requests' method names
+    pub fn method_names(&self) -> impl Iterator<Item = &str> + '_ {
+        self.requests().iter().map(|req| req.method())
     }
 }
 
@@ -245,6 +274,24 @@ impl<Payload, ErrData> ResponsePacket<Payload, ErrData> {
             Self::Single(single) => ResponsePacketErrorsIter::Single(Some(single)),
             Self::Batch(batch) => ResponsePacketErrorsIter::Batch(batch.iter()),
         }
+    }
+
+    /// Returns a all [`Response`].
+    pub fn responses(&self) -> &[Response<Payload, ErrData>] {
+        match self {
+            Self::Single(req) => std::slice::from_ref(req),
+            Self::Batch(req) => req.as_slice(),
+        }
+    }
+
+    /// Returns an iterator over the responses' payloads.
+    pub fn payloads(&self) -> impl Iterator<Item = &ResponsePayload<Payload, ErrData>> + '_ {
+        self.responses().iter().map(|resp| &resp.payload)
+    }
+
+    /// Returns an iterator over the responses' identifiers.
+    pub fn response_ids(&self) -> impl Iterator<Item = &Id> + '_ {
+        self.responses().iter().map(|resp| &resp.id)
     }
 
     /// Find responses by a list of IDs.
