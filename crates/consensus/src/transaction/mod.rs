@@ -36,7 +36,7 @@ pub use eip4844::{TxEip4844, TxEip4844Variant, TxEip4844WithSidecar};
 /// Re-export for convenience
 pub use either::Either;
 
-pub use envelope::{EthereumTxEnvelope, TxEnvelope, TxType};
+pub use envelope::{EthereumTxEnvelope, TxEnvelope};
 
 mod legacy;
 pub use legacy::{from_eip155_value, to_eip155_value, TxLegacy};
@@ -47,6 +47,9 @@ pub use rlp::{RlpEcdsaDecodableTx, RlpEcdsaEncodableTx, RlpEcdsaTx};
 
 mod typed;
 pub use typed::{EthereumTypedTransaction, TypedTransaction};
+
+mod tx_type;
+pub use tx_type::TxType;
 
 mod meta;
 pub use meta::{TransactionInfo, TransactionMeta};
@@ -280,7 +283,7 @@ pub trait SignableTransaction<Signature>: Transaction {
     }
 }
 
-// TODO: Remove in favor of dyn trait upcasting (TBD, see https://github.com/rust-lang/rust/issues/65991#issuecomment-1903120162)
+// TODO(MSRV-1.86): Remove in favor of dyn trait upcasting
 #[doc(hidden)]
 impl<S: 'static> dyn SignableTransaction<S> {
     pub fn __downcast_ref<T: any::Any>(&self) -> Option<&T> {
