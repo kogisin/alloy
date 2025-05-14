@@ -5,6 +5,80 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1](https://github.com/alloy-rs/alloy/releases/tag/v1.0.1) - 2025-05-13
+
+### Other
+
+- Revert "feat(`provider`)!: `Fillers` tuple ([#2261](https://github.com/alloy-rs/alloy/issues/2261))" ([#2443](https://github.com/alloy-rs/alloy/issues/2443))
+
+## [1.0.0](https://github.com/alloy-rs/alloy/releases/tag/v1.0.0) - 2025-05-13
+
+### Bug Fixes
+
+- [rpc-types-engine] Use 7594 sidecar in `BlobsBundleV2` ([#2433](https://github.com/alloy-rs/alloy/issues/2433))
+- [eips] `proofs` field name in `BlobsBundleV2` ([#2426](https://github.com/alloy-rs/alloy/issues/2426))
+
+### Dependencies
+
+- Bump jsonrpsee types ([#2439](https://github.com/alloy-rs/alloy/issues/2439))
+- Bump jsonrpsee ([#2437](https://github.com/alloy-rs/alloy/issues/2437))
+
+### Documentation
+
+- Update alloy-provider README with links and usage example ([#2319](https://github.com/alloy-rs/alloy/issues/2319))
+- [provider] Add usage examples to provider README ([#2313](https://github.com/alloy-rs/alloy/issues/2313))
+
+### Features
+
+- [`provider`] `Fillers` tuple ([#2261](https://github.com/alloy-rs/alloy/issues/2261))
+- Add source to recovery err ([#2424](https://github.com/alloy-rs/alloy/issues/2424))
+- Add ens crate from foundry ([#2376](https://github.com/alloy-rs/alloy/issues/2376))
+- [consensus] Generic sidecar for 4844 ([#2434](https://github.com/alloy-rs/alloy/issues/2434))
+- Add helpers to check set fields ([#2431](https://github.com/alloy-rs/alloy/issues/2431))
+- [eips] Add `BlobTransactionSidecarVariant` ([#2430](https://github.com/alloy-rs/alloy/issues/2430))
+- [eips] `BlobTransactionSidecarEip7594` ([#2428](https://github.com/alloy-rs/alloy/issues/2428))
+- [eips] Osaka blob params ([#2427](https://github.com/alloy-rs/alloy/issues/2427))
+- [eips] Add more EIP-7594 constants ([#2425](https://github.com/alloy-rs/alloy/issues/2425))
+
+### Miscellaneous Tasks
+
+- Release 1.0.0
+- Fix warnings ([#2441](https://github.com/alloy-rs/alloy/issues/2441))
+- Remove shadowed recovery fn ([#2438](https://github.com/alloy-rs/alloy/issues/2438))
+
+## [0.15.11](https://github.com/alloy-rs/alloy/releases/tag/v0.15.11) - 2025-05-12
+
+### Bug Fixes
+
+- Ensure mandatory to field ([#2412](https://github.com/alloy-rs/alloy/issues/2412))
+
+### Documentation
+
+- Docs (README.md): integrating crates.io badges ([#2419](https://github.com/alloy-rs/alloy/issues/2419))
+- Should be decoded ([#2414](https://github.com/alloy-rs/alloy/issues/2414))
+- Update docs ([#2413](https://github.com/alloy-rs/alloy/issues/2413))
+
+### Features
+
+- Impl Signerrecoverable trait ([#2423](https://github.com/alloy-rs/alloy/issues/2423))
+- Add fn `fill_envelope` ([#2411](https://github.com/alloy-rs/alloy/issues/2411))
+- Some covenience signer impls ([#2410](https://github.com/alloy-rs/alloy/issues/2410))
+- Add some either impls ([#2409](https://github.com/alloy-rs/alloy/issues/2409))
+
+### Miscellaneous Tasks
+
+- Release 0.15.11
+- Fix clippy ([#2422](https://github.com/alloy-rs/alloy/issues/2422))
+- Add back filteredparams ([#2421](https://github.com/alloy-rs/alloy/issues/2421))
+
+### Other
+
+- Added  anvil_send_impersonated_transaction ([#2417](https://github.com/alloy-rs/alloy/issues/2417))
+
+### Refactor
+
+- Improve and simplify event filters ([#2140](https://github.com/alloy-rs/alloy/issues/2140))
+
 ## [0.15.10](https://github.com/alloy-rs/alloy/releases/tag/v0.15.10) - 2025-05-07
 
 ### Bug Fixes
@@ -21,6 +95,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Miscellaneous Tasks
 
+- Release 0.15.10
 - Add `alloy-rpc-types-debug` to check_no_std ([#2401](https://github.com/alloy-rs/alloy/issues/2401))
 
 ### Other
@@ -882,6 +957,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.7.3](https://github.com/alloy-rs/alloy/releases/tag/v0.7.3) - 2024-12-05
 
+### Miscellaneous Tasks
+
+- Release 0.7.3
+
+## [Unreleased](https://github.com/alloy-rs/alloy/compare/v0.7.0...HEAD)
+
 ### Bug Fixes
 
 - Wrong func sig ([#1742](https://github.com/alloy-rs/alloy/issues/1742))
@@ -918,7 +999,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Miscellaneous Tasks
 
-- Release 0.7.3
 - Export storage root fns ([#1756](https://github.com/alloy-rs/alloy/issues/1756))
 - Re-export stateroot fns ([#1753](https://github.com/alloy-rs/alloy/issues/1753))
 - Display instead of Debug the response JSON ([#1748](https://github.com/alloy-rs/alloy/issues/1748))

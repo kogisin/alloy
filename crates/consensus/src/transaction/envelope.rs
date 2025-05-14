@@ -444,30 +444,6 @@ impl<Eip4844: RlpEcdsaEncodableTx> EthereumTxEnvelope<Eip4844> {
         }
     }
 
-    /// Recover the signer of the transaction.
-    #[cfg(feature = "k256")]
-    pub fn try_into_recovered(
-        self,
-    ) -> Result<crate::transaction::Recovered<Self>, alloy_primitives::SignatureError>
-    where
-        Eip4844: SignableTransaction<Signature>,
-    {
-        let signer = self.recover_signer()?;
-        Ok(crate::transaction::Recovered::new_unchecked(self, signer))
-    }
-
-    /// Recover the signer of the transaction and returns a `Recovered<&Self>`
-    #[cfg(feature = "k256")]
-    pub fn try_to_recovered_ref(
-        &self,
-    ) -> Result<crate::transaction::Recovered<&Self>, alloy_primitives::SignatureError>
-    where
-        Eip4844: SignableTransaction<Signature>,
-    {
-        let signer = self.recover_signer()?;
-        Ok(crate::transaction::Recovered::new_unchecked(self, signer))
-    }
-
     /// Calculate the signing hash for the transaction.
     pub fn signature_hash(&self) -> B256
     where
@@ -525,6 +501,24 @@ impl<Eip4844: RlpEcdsaEncodableTx> EthereumTxEnvelope<Eip4844> {
             Self::Eip4844(t) => t.eip2718_encoded_length(),
             Self::Eip7702(t) => t.eip2718_encoded_length(),
         }
+    }
+}
+
+#[cfg(any(feature = "secp256k1", feature = "k256"))]
+impl<Eip4844> crate::transaction::SignerRecoverable for EthereumTxEnvelope<Eip4844>
+where
+    Eip4844: RlpEcdsaEncodableTx + SignableTransaction<Signature>,
+{
+    fn recover_signer(&self) -> Result<alloy_primitives::Address, crate::crypto::RecoveryError> {
+        let signature_hash = self.signature_hash();
+        crate::crypto::secp256k1::recover_signer(self.signature(), signature_hash)
+    }
+
+    fn recover_signer_unchecked(
+        &self,
+    ) -> Result<alloy_primitives::Address, crate::crypto::RecoveryError> {
+        let signature_hash = self.signature_hash();
+        crate::crypto::secp256k1::recover_signer_unchecked(self.signature(), signature_hash)
     }
 }
 
